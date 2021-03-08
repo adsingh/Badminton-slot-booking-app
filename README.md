@@ -14,3 +14,9 @@
 5. In [`BookingUtils.js`](./src/cypress/BookingUtils.js) make sure `daysToBookFor` and `slotToBookByDay` have correct values set in them.
 -  Change them as needed.
 6. From the root of the repo, Run `npm start` and voila the tool should take care of the bookings for ya!
+
+## Stopping the app
+- Run `npm run forever-list`. This will list all the instances of the app.
+!['Output for npm run forever-list'](./forever-list.JPG)
+- Run `npm run forever-stop <id>` where `<id>` will be something inside the red circle above.
+**Note:** Start with bigger id first to avoid errors, the ids get shifted apparently.
