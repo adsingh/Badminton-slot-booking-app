@@ -1,0 +1,32 @@
+{
+  "name": "badmintonslotchecker",
+  "version": "1.0.0",
+  "description": "Checking if badminton slots are open",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "forever start index.js",
+    "forever-list": "forever list",
+    "forever-stop": "forever stop",
+    "cypress:open": "cypress open",
+    "cypress:sample": "cypress run --spec ./cypress/integration/examples/window.spec.js --config video=false",
+    "monday": "cypress run --spec ./cypress/integration/monday.js --config video=false",
+    "tuesday": "cypress run --spec ./cypress/integration/tuesday.js --config video=false",
+    "wednesday": "cypress run --spec ./cypress/integration/wednesday.js --config video=false",
+    "thursday": "cypress run --spec ./cypress/integration/thursday.js --config video=false",
+    "friday": "cypress run --spec ./cypress/integration/friday.js --config video=false",
+    "saturday": "cypress run --spec ./cypress/integration/saturday.js --config video=false",
+    "sunday": "cypress run --spec ./cypress/integration/sunday.js --config video=false"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.10.4",
+    "forever": "^3.0.4",
+    "jsdom": "^16.4.0",
+    "nodemailer": "^6.5.0"
+  },
+  "devDependencies": {
+    "cypress": "^6.6.0"
+  }
+}
