@@ -1,16 +1,21 @@
 const nodemailer = require("nodemailer");
-const { primaryEmailId, allEmailIds, senderEmailLogin } = require('./authCreds');
+const { primaryEmailId, emailsToNotifyAboutBooking, emailsToNotifyAboutSlots, senderEmailLogin } = require('./authCreds');
 
 let transporter = undefined;
 
-const allRecipients = allEmailIds.join(",");
+const allRecipientsOfBookingEmails = emailsToNotifyAboutBooking.join(",");
+const allRecipientsOfSlotOpenEmails = emailsToNotifyAboutSlots.join(",");
 
 async function notifyMe(content) {
     sendEmail(primaryEmailId, content);
 }
 
-async function notifyAll(content) {
-    sendEmail(allRecipients, content).catch(console.error);
+async function notifyAllAboutBooking(content) {
+    sendEmail(allRecipientsOfBookingEmails, content).catch(console.error);
+}
+
+async function notifyAllAboutSlotOpen() {
+    sendEmail(allRecipientsOfSlotOpenEmails, "Slots have started to open!!").catch(console.error);
 }
 
 async function sendEmail(recipients, content) {
@@ -41,4 +46,5 @@ function getTransporter() {
 }
 
 exports.notifyMe = notifyMe;
-exports.notifyAll = notifyAll;
+exports.notifyAllAboutBooking = notifyAllAboutBooking;
+exports.notifyAllAboutSlotOpen = notifyAllAboutSlotOpen;
