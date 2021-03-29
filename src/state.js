@@ -4,7 +4,8 @@ const defaultState = {
     areSlotsOpenByDay: getDefaultSlotOpenObj(),
     daysRemainingToCheck: new Set(daysToBookFor),
     slotsForAllDaysChecked: false,
-    shouldReInit: true
+    shouldReInit: true,
+    slotOpenNotificationSent: false
 };
 
 let state = {

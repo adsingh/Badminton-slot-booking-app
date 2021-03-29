@@ -8,7 +8,7 @@ const {
     getPathForDay,
     slotToBookByDay
  } = require('./cypress/BookingUtils');
- const { notifyAll, notifyMe } = require('./emailActor');
+ const { notifyAllAboutBooking, notifyMe, notifyAllAboutSlotOpen } = require('./emailActor');
  const { state, reInitState } = require('./state');
 
 const { JSDOM } = jsDom;
@@ -19,8 +19,8 @@ function isItFridayOrSaturday(date) {
 }
 
 function bookIfSlotsOpenForDay(day) {
-    console.log("checking for day: " + day);
     const path = getPathForDay(day);
+    console.log(`checking for day: ${day}, path: ${path}`);
     const options = {
         host: 'northwestbadmintonacademy.sites.zenplanner.com',
         path
@@ -52,6 +52,11 @@ function onSlotCheckRequestEnd(day, data) {
     if (!dom.window.document.querySelector(".list.calendar tr")) 
         return;
 
+    if (!state.slotOpenNotificationSent) {
+        state.slotOpenNotificationSent = true;
+        notifyAllAboutSlotOpen();
+    }
+
     // console.log("slots open");
     const clickables = dom.window.document.querySelectorAll('div.clickable');
 
@@ -62,19 +67,23 @@ function onSlotCheckRequestEnd(day, data) {
             if (clickable.innerHTML == slotToBookByDay[day]) {
                 
                 if (clickable.classList.contains('sessionFull')) {
-                    notifyAll(`Slots already full for ${day} :(`);
+                    notifyAllAboutBooking(`Slots already full for ${day} :(`);
                 }
                 else {
                     bookSlotsForDay(day);
 
                     if (daysToBookFor.length == state.daysRemainingToCheck.size) {
-                        notifyAll(`Started bookings for next week!! Stay tuned for updates :)`);
+                        notifyAllAboutBooking(`Started bookings for next week!! Stay tuned for updates :)`);
                     }
                 }
 
                 state.areSlotsOpenByDay[day] = true;
                 state.daysRemainingToCheck.delete(day);
                 state.slotsForAllDaysChecked = state.daysRemainingToCheck.size == 0;
+
+                if (state.slotsForAllDaysChecked) {
+                    notifyAllAboutBooking(`Booking attemmpted for all the days! Verify in next few min.`);
+                }
             }
         });
     }
@@ -95,7 +104,7 @@ function bookSlotsForDay(day) {
     exec(bookingCommandByDay[day], (error, _stdout, stderr) => {
         if (error) {
             console.error(`*** [${day}] *** booking FAILED!!`);
-            notifyAll(`Your booking might have failed for ${day} - Try manually if so!!`);
+            notifyAllAboutBooking(`Your booking might have failed for ${day} - Try manually if so!!`);
 
             return;
         }
