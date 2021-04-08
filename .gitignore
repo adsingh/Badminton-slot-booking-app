@@ -104,10 +104,9 @@ dist
 .tern-port
 
 # Cypress unwanted files
-cypress/integration/examples
-cypress/screenshots
-cypress/videos
-cypress/support
+cypress/*
 
 # login creds
 src/authCreds.js
+package-lock.json
+.idea

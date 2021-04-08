@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-const { password } = require('../authCreds');
+const { password, profileNames } = require('../authCreds');
 
 const days = {
     'Monday': 'Monday',
@@ -11,11 +11,6 @@ const days = {
     'Saturday': 'Saturday',
     'Sunday': 'Sunday'
 }
-
-// const daysToBookFor = [
-//     days.Tuesday,
-//     days.Thursday
-// ];
 
 const daysToBookFor = [
     days.Monday,
@@ -69,9 +64,9 @@ function getDefaultSlotOpenObj() {
 
 function getNextDateForDay(day) {
     const today = new Date();
-    const dayOffset = (offsetSubtractorByDay[day] - today.getDay()) % 7;
+    let dayOffset = (offsetSubtractorByDay[day] - today.getDay()) % 7;
 
-    if (dayOffset == 0) {
+    if (dayOffset === 0) {
         dayOffset = 7;
     }
 
@@ -90,11 +85,17 @@ function bookSlotsForDayAndAccount(day, accountId) {
     cy.get("#idUsername").type(accountId);
     cy.get("#idPassword").type(`${password}{enter}`);
 
-    cy.visit(`https://northwestbadmintonacademy.sites.zenplanner.com${getPathForDay(day)}`);
+    profileNames.forEach((profileName) => {
+        cy.log(profileName)
+        cy.visit(`https://northwestbadmintonacademy.sites.zenplanner.com${getPathForDay(day)}`);
 
-    cy.get('div.clickable').contains(slotToBookByDay[day]).click();
+        cy.get('div.clickable').contains(slotToBookByDay[day]).click();
 
-    cy.get('a').contains('Reserve').click();
+        cy.get('select#familyMembers').select(profileName);
+
+        cy.get('a').contains('Reserve').click();
+    });
+
 }
 
 exports.days = days;

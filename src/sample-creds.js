@@ -10,6 +10,11 @@ const senderEmailLogin = {
     password: 'password'
 }
 
+const profileNames = [
+    'Yeshwanth Nagaraja',
+    'Amita V Menon'
+]
+
 
 // Account ids for the badminton booking website
 // Add all the ids you need to book for
@@ -27,3 +32,4 @@ exports.accountIds = accountIds;
 exports.allEmailIds = allEmailIds;
 exports.primaryEmailId = primaryEmailId;
 exports.senderEmailLogin = senderEmailLogin;
+exports.profileNames = profileNames;
